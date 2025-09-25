@@ -26,7 +26,7 @@ def generate_variations(base_word):
     return list(variations)
 
 def get_user_input():
-    print("\n[+] Entrez les informations sur la cible (laisser vide si inconnu)\n")
+    print("\n[+] Enter Information about target (Leave empty if unknown)\n")
     
     user_info = {
         "firstname": input("First Name : ").strip(),
@@ -56,7 +56,7 @@ def scrape_social_data(profile_url):
         text_data = ' '.join([p.text for p in soup.find_all('p')])
         return text_data.split()
     except Exception as e:
-        print(f"[-] Echec du scraping : {e}")
+        print(f"[-] Error while scraping : {e}")
         return []
 
 def generate_passwords(user_info, min_length, max_length):
@@ -130,7 +130,6 @@ def pipe_to_aircrack(password_generator, bssid, cap_file):
         t = threading.Thread(target=stream_output)
         t.start()
 
-        # Envoie les mots de passe ligne par ligne dans stdin
         for pwd in password_generator:
             try:
                 proc.stdin.write(pwd + '\n')
@@ -153,7 +152,7 @@ def main():
         scraped_words = scrape_social_data(profile_url)
         user_info["social_bio"] = scraped_words
 
-    use_aircrack = input("\n[?] Voulez-vous lancer aircrack-ng en direct (sans enregistrer la wordlist) ? (y/n) : ").strip().lower()
+    use_aircrack = input("\n[?] Do you wanna pipe the wordlist straight to aircrack-ng (Without saving the wordlist) ? (y/n) : ").strip().lower()
     
     if use_aircrack == 'y':
         bssid = input("BSSID (MAC de la cible) : ").strip()
@@ -165,4 +164,5 @@ def main():
         save_passwords(passwords)
 
 if __name__ == "__main__":
+
     main()
